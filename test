@@ -1,0 +1,99 @@
+## Class Diagram
+
+```mermaid
+classDiagram
+
+User <|.. Member
+User <|.. Librarian
+Item <|.. Book
+Catalogue <|.. BookCatalogue
+
+class User {a
+	<<interface>>
+	userId: Int
+	seeBookCatalogue(BookCatalogue): BookCatalogue
+	searchBook(String): List<Books>
+	seeBookInfos(Book): Unit
+}
+
+class Member {
+	messages: List<String>
+	listOfBooks: BookCatalogue
+	isBorrowedTill(Book): Unit
+	borrowBook(Book): Unit
+	returnBook(Book): Unit
+	seeMyBorrowedBooks(): Unit
+	readMessages(): Unit
+}
+
+class Librarian {
+	addBook(Book, BookCatalogue): Unit
+	removeBook(Book, BookCatalogue): Unit
+	setBookTitle(Book, String): Unit
+	setBookDamage(Book, Boolean): Unit
+	seeMemberInfo(Member): Unit
+	remindMember(Member, Book): Unit
+}
+
+class Item {
+	<<interface>>
+	title: String
+}
+
+class Book {
+	borrowed: Boolean
+	borrowedTill: String
+	borrowedBy: Member
+	damaged: Boolean
+	isBorrowedTill(): String
+	setBookTitle(): Unit
+	setDamaged(Boolean): Unit
+	setBorrowed(Boolean): Unit
+	setBorrowedTill(String): Unit
+	printBook(): Unit
+}
+
+class Catalogue {
+<<interface>>
+	searchTitle(String): Catalogue
+	addToCatalogue(<I>): Unit
+	removeFromCatalogue(<I>): Unit
+	printCatalogue(): Unit
+}
+
+class BookCatalogue {
+	booklist: List<Book>
+	filterBooksTitle(String): BookCatalogue
+	filterBooksBorrowed(Boolean): BookCatalogue
+	amountOfBooks(String): BookCatalogue
+}
+```
+
+
+Member and Librarian are using the User interface.
+Book is using the Item interface.
+BookCatalogue is using the Catalogue interface.
+
+## Member
+
+- has BookCatalogue with its borrowed Books.
+- can searchBooks by title.
+- can borrowBooks when they are not borrowed.
+- receives a message by the librarian when he has to return the book.
+
+## Librarian
+
+- add/remove books to/from BookCatalogue.
+- change Book metadata
+- has to remind Member 7 days before he has to return a Book.
+- NOTE: This design doesn't automatically notify the user, the Librarian has to check himself if there is Books to be returned.
+
+## Book
+
+- has title.
+- can be borrowed or not by a Member.
+- can be damaged.
+
+## BookCatalogue
+
+- this is a List of Book with methods to search Books or filter by title / borrowed-status.

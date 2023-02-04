@@ -3,10 +3,82 @@
 ```mermaid
 classDiagram
 
-User <|.. Member
-User <|.. Librarian
+MemberAccess <|.. Member
+LibrarianAccess <|.. Librarian
 Item <|.. Book
-Catalogue <|.. BookCatalogue
+
+
+Person <|-- Librarian
+Person <|-- Member
+Person <|-- Developer 
+BokIntervace <|-- LibrarianAccess
+BookIntervace <|-- MemberAccess
+BookList "1" <-- "n" Book:is part of
+class Person {a
+	Id: Int
+	Name: String
+	LastName: String
+	Kontakt: String
+	}
+	
+class Member {
+	borrowedBooks:List[Book]
+	memberStatus:Int
+	borrow(Book):Unit
+	returnBook(Book):Book
+	isBanned():Boolean
+}
+class Developer {
+	developerId: Int
+}
+class Librarian{
+
+}
+
+class Develop{a
+<<interface>>
+	access(Int)}
+
+class BookIntervace{a
+<<interface>> 
+listOfBooks: Booklist
+seeBook():List[String]
+}
+
+class LibrarianAccess{a
+<<interface>>
+changeState(Book):Unit
+seeBorrower():List[Member]}
+
+class MemberAcces{a
+<<interface>>
+borrowBook(Book):Unit
+retrunBook(Book):Unit}
+
+class Book{
+	bookId:Int
+	bookName:String
+	borrowed:Boolean
+	}
+class BookList{
+	listOfBooks: List[Book]
+	getBorrowed():List[Book]
+	getBorrowedBooks():List[Book]
+	getAllBooks():List[Book]
+	borrowBook(Book):Unit
+	returnBook(Book):Unit}
+```
+	
+
+
+
+
+
+
+
+
+
+
 
 class User {a
 	<<interface>>
@@ -97,3 +169,12 @@ BookCatalogue is using the Catalogue interface.
 ## BookCatalogue
 
 - this is a List of Book with methods to search Books or filter by title / borrowed-status.
+
+
+## Modularity
+The code is seperated in two different Sides on one Side the Persons interacting with the Libaray and on the Other the books contained in the Libary
+The Pweosns can interact with the books over their respective Interfaces Modular Composavility is therefore satisfyed. Modular Understandability is given a 
+reader doesnt have to understand how the booklist or the different Persons work to get a udnerstadning what the others jib is.
+Modular Continuity depending on the change needed but chaning the options avavibale to different persons only needs to change the corresponsing interface.
+Modular Protection depens on the individuall way some functions are implemented but if done correctly a error on the Person side should not
+affect the List of Books and vice versa.
